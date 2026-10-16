@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ArrowMerge — Drag &amp; Slide Arrow Merge Puzzle | Reach 100 Million</title>
+<meta name="description" content="ArrowMerge is a free drag-and-slide arrow logic puzzle. Grab arrow blocks, slide them along their direction, and push equal numbers together to merge them into bigger tiles. A glass Gate drops new arrows every 4 moves — how far can you climb toward 100,000,000?">
+<meta name="keywords" content="arrow puzzle game, drag and slide puzzle, number merge game, sliding block puzzle, unblock puzzle, spatial reasoning game, merge numbers online, free browser puzzle, reach 100 million">
+<meta name="theme-color" content="#04060e">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ArrowMerge — Drag & Slide Arrow Merge Puzzle">
+<meta property="og:description" content="Drag arrow blocks, slide them along their direction, merge equal numbers through a frosted glass Gate. Free, timeless, infinite scaling to 100 million.">
+<meta property="og:site_name" content="ArrowMerge">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ArrowMerge — Drag & Slide Arrow Merge Puzzle">
+<meta name="twitter:description" content="A glassmorphic arrow sliding puzzle. Drag, slide, merge, chase 100 million.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237aa2ff'/%3E%3Cstop offset='1' stop-color='%2366e0ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='4' y='4' width='56' height='56' rx='16' fill='%230a1226'/%3E%3Cpath d='M32 14 44 30H36v20H28V30H20z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "ArrowMerge",
+      "description": "Free glassmorphic drag-and-slide arrow merge puzzle — slide arrows, fuse equal numbers, chase 100 million."
+    },
+    {
+      "@type": "VideoGame",
+      "name": "ArrowMerge — Drag & Slide Arrow Merge Puzzle",
+      "genre": ["Puzzle", "Logic", "Brain Training", "Casual"],
+      "applicationCategory": "Game",
+      "operatingSystem": "Any modern web browser",
+      "gamePlatform": "Web browser",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Drag arrow blocks along their direction on a frosted glass board, push equal numbers together to merge them into higher tiers, and manage a spawn Gate that releases new arrows every four moves. Infinite number scaling up to 100,000,000 and beyond."
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "How Arrow Logic Puzzles Boost Spatial Reasoning",
+      "about": "Spatial reasoning benefits of arrow sliding and logic puzzles."
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Mastering the Merge: Strategies for Reaching 100 Million",
+      "about": "Advanced merge strategy for reaching a 100,000,000 score in ArrowMerge."
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "The Evolution of Sliding Block Puzzle Games",
+      "about": "The history of sliding block puzzles from the 15-puzzle to modern drag-and-merge games."
+    }
+  ]
+}
+</script>
+<script>
+/* Set theme before paint to avoid flash */
+(function () {
+  try {
+    var t = JSON.parse(localStorage.getItem('am3_theme')) || 'midnight';
+    if (t === 'sky' || t === 'crimson' || t === 'midnight') {
+      document.documentElement.dataset.theme = t;
+    }
+  } catch (e) { /* keep default */ }
+})();
+</script>
+<style>
+/* ============================================================
+   ArrowMerge — drag & slide arrow merge puzzle · design system
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: 'Inter', 'Cairo', system-ui, sans-serif;
+  min-height: 100vh;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, svg { display: block; }
+button { font: inherit; cursor: pointer; }
+a { color: inherit; }
+
+/* ---------- theme tokens ---------- */
+:root[data-theme="midnight"] {
+  --bg0: #04060e;
+  --bg1: #0b1226;
+  --blob1: rgba(64, 89, 192, 0.38);
+  --blob2: rgba(102, 224, 255, 0.14);
+  --text: #eef3ff;
+  --dim: rgba(238, 243, 255, 0.64);
+  --faint: rgba(238, 243, 255, 0.38);
+  --glass: rgba(255, 255, 255, 0.055);
+  --glass-strong: rgba(8, 13, 28, 0.72);
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.26);
+  --accent: #7aa2ff;
+  --accent2: #66e0ff;
+  --accent-ink: #071022;
+  --glow: rgba(122, 162, 255, 0.38);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  --inset: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  color-scheme: dark;
+}
+:root[data-theme="sky"] {
+  --bg0: #e7f3ff;
+  --bg1: #fbfdff;
+  --blob1: rgba(47, 139, 255, 0.22);
+  --blob2: rgba(102, 224, 255, 0.28);
+  --text: #0b2540;
+  --dim: rgba(11, 37, 64, 0.66);
+  --faint: rgba(11, 37, 64, 0.42);
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.86);
+  --border: rgba(255, 255, 255, 0.9);
+  --border-strong: rgba(255, 255, 255, 1);
+  --accent: #1d7dff;
+  --accent2: #38b6ff;
+  --accent-ink: #ffffff;
+  --glow: rgba(32, 135, 255, 0.30);
+  --shadow: 0 24px 55px rgba(23, 68, 120, 0.18);
+  --inset: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  color-scheme: light;
+}
+:root[data-theme="crimson"] {
+  --bg0: #fff1f3;
+  --bg1: #ffffff;
+  --blob1: rgba(217, 32, 53, 0.16);
+  --blob2: rgba(255, 90, 110, 0.18);
+  --text: #320710;
+  --dim: rgba(50, 7, 16, 0.66);
+  --faint: rgba(50, 7, 16, 0.42);
+  --glass: rgba(255, 255, 255, 0.58);
+  --glass-strong: rgba(255, 255, 255, 0.88);
+  --border: rgba(255, 255, 255, 0.95);
+  --border-strong: #ffffff;
+  --accent: #d92035;
+  --accent2: #ff5a6e;
+  --accent-ink: #ffffff;
+  --glow: rgba(217, 32, 53, 0.28);
+  --shadow: 0 24px 55px rgba(130, 12, 30, 0.16);
+  --inset: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  color-scheme: light;
+}
+
+body {
+  color: var(--text);
+  background:
+    radial-gradient(58% 46% at 12% -4%, var(--blob1), transparent 62%),
+    radial-gradient(52% 42% at 92% 4%, var(--blob2), transparent 64%),
+    linear-gradient(165deg, var(--bg0), var(--bg1) 62%);
+  background-attachment: fixed;
+  transition: color 0.35s ease;
+}
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+/* ---------- floating ambience ---------- */
+.orbs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.orb {
+  position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.75;
+  animation: drift 26s ease-in-out infinite alternate;
+}
+.orb.o1 { width: 44vmax; height: 44vmax; left: -14vmax; top: -16vmax; background: var(--blob1); }
+.orb.o2 { width: 36vmax; height: 36vmax; right: -12vmax; top: 22vh; background: var(--blob2); animation-delay: -9s; }
+.orb.o3 { width: 30vmax; height: 30vmax; left: 24vw; bottom: -16vmax; background: var(--blob1); opacity: 0.5; animation-delay: -17s; }
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(4vmax, 3vmax, 0) scale(1.12); }
+}
+
+/* ---------- glass primitives ---------- */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  backdrop-filter: blur(18px) saturate(1.45);
+  -webkit-backdrop-filter: blur(18px) saturate(1.45);
+  box-shadow: var(--shadow), var(--inset);
+}
+.wrap { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 13px 24px; border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--text); font-weight: 700; font-size: 15px; letter-spacing: 0.01em;
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: var(--inset);
+  transition: transform 0.16s ease, box-shadow 0.2s ease, background 0.2s ease;
+  text-decoration: none;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow), var(--inset); }
+.btn:active { transform: translateY(0) scale(0.98); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: var(--accent-ink); border-color: transparent;
+  box-shadow: 0 10px 30px var(--glow), var(--inset);
+}
+.btn-primary:hover { box-shadow: 0 16px 40px var(--glow), var(--inset); }
+.btn svg { width: 17px; height: 17px; }
+/* ---------- nav ---------- */
+.nav {
+  position: sticky; top: 12px; z-index: 40;
+  margin: 14px auto 0;
+  max-width: 1120px;
+  display: flex; align-items: center; gap: 18px;
+  padding: 10px 18px;
+  border-radius: 18px;
+}
+.brand { display: flex; align-items: center; gap: 11px; text-decoration: none; font-weight: 800; font-size: 18px; letter-spacing: -0.02em; }
+.brand-mark {
+  width: 38px; height: 38px; border-radius: 12px; flex: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: grid; place-items: center;
+  box-shadow: 0 8px 22px var(--glow);
+}
+.brand-mark svg { width: 22px; height: 22px; }
+.brand small { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-top: -3px; }
+.nav-links { display: flex; gap: 4px; margin-left: auto; align-items: center; }
+.nav-links a {
+  text-decoration: none; font-size: 14px; font-weight: 600; color: var(--dim);
+  padding: 8px 13px; border-radius: 999px; transition: color 0.18s, background 0.18s;
+}
+.nav-links a:hover { color: var(--text); background: var(--glass); }
+.nav .btn { padding: 9px 18px; font-size: 14px; }
+
+/* ---------- hero ---------- */
+.hero { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 46px; align-items: center; padding: 74px 0 64px; }
+.kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--dim); padding: 8px 15px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--glass); box-shadow: var(--inset);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.kicker i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); animation: pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+.hero h1 {
+  margin: 22px 0 14px;
+  font-size: clamp(36px, 5.2vw, 60px);
+  line-height: 1.05; letter-spacing: -0.035em; font-weight: 900;
+}
+.hero h1 .grad {
+  background: linear-gradient(100deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 4px 26px var(--glow));
+}
+.hero .sub { font-size: 17.5px; color: var(--dim); max-width: 34em; margin: 0 0 10px; }
+.hero .sub-ar { font-family: 'Cairo', 'Inter', sans-serif; font-size: 15.5px; color: var(--faint); margin: 0 0 26px; }
+.cta-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-bottom: 26px; }
+.trust { display: flex; gap: 10px; flex-wrap: wrap; }
+.trust span {
+  font-size: 12.5px; font-weight: 600; color: var(--dim);
+  border: 1px solid var(--border); background: var(--glass);
+  padding: 7px 13px; border-radius: 999px; box-shadow: var(--inset);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+
+/* ---------- hero card ---------- */
+.hero-card { padding: 26px 26px 22px; }
+.hero-card h2 { margin: 0 0 4px; font-size: 18px; letter-spacing: -0.01em; }
+.hero-card .card-sub { font-size: 13.5px; color: var(--dim); margin: 0 0 16px; }
+.rules { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 11px; }
+.rules li { display: flex; gap: 12px; align-items: flex-start; font-size: 13.6px; color: var(--dim); }
+.rules li b { color: var(--text); font-weight: 700; }
+.rule-ico {
+  flex: none; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent2)); color: var(--accent-ink);
+  box-shadow: 0 6px 18px var(--glow);
+}
+.rule-ico svg { width: 17px; height: 17px; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat {
+  border: 1px solid var(--border); border-radius: 15px; background: var(--glass);
+  padding: 12px 10px; text-align: center; box-shadow: var(--inset);
+}
+.stat b { display: block; font-size: 19px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.stat span { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+
+/* progression tracker */
+.tracker { margin: 0 0 18px; }
+.tracker-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+.tracker-head b { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+.tracker-head span { font-size: 12px; font-weight: 700; color: var(--faint); font-variant-numeric: tabular-nums; }
+.tracker-bar { height: 9px; border-radius: 999px; background: rgba(127, 140, 170, 0.18); border: 1px solid var(--border); overflow: hidden; }
+.tracker-fill {
+  height: 100%; width: 0%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 14px var(--glow);
+  transition: width 0.6s cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+.tracker-marks { display: flex; justify-content: space-between; margin-top: 7px; }
+.tracker-marks span { font-size: 10px; font-weight: 800; letter-spacing: 0.05em; color: var(--faint); transition: color 0.3s; }
+.tracker-marks span.done { color: var(--accent); text-shadow: 0 0 10px var(--glow); }
+.hero-card .btn { width: 100%; justify-content: center; }
+
+/* ---------- game section ---------- */
+.game-section { padding: 34px 0 70px; }
+.section-head { text-align: center; margin-bottom: 26px; }
+.section-title { font-size: clamp(26px, 3.4vw, 38px); letter-spacing: -0.03em; font-weight: 900; margin: 0 0 8px; }
+.section-sub { color: var(--dim); font-size: 15.5px; margin: 0; }
+.game-shell { max-width: 640px; margin: 0 auto; padding: 16px; border-radius: 28px; }
+.game-hud { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.score-cluster { display: flex; gap: 10px; }
+.score-chip {
+  border: 1px solid var(--border); border-radius: 14px; background: var(--glass);
+  padding: 7px 15px; min-width: 96px; box-shadow: var(--inset);
+}
+.score-chip span { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.score-chip b { font-size: 19px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.hud-controls { display: flex; gap: 8px; margin-left: auto; align-items: center; }
+.icon-btn {
+  width: 42px; height: 42px; border-radius: 13px; border: 1px solid var(--border);
+  background: var(--glass); color: var(--text); display: grid; place-items: center;
+  box-shadow: var(--inset); transition: transform 0.15s ease, background 0.18s ease, box-shadow 0.18s;
+}
+.icon-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow), var(--inset); }
+.icon-btn:active { transform: scale(0.94); }
+.icon-btn svg { width: 19px; height: 19px; }
+.theme-dots { display: flex; gap: 7px; padding: 5px; border-radius: 999px; border: 1px solid var(--border); background: var(--glass); box-shadow: var(--inset); }
+.theme-dot {
+  width: 26px; height: 26px; border-radius: 50%; border: 2px solid transparent; padding: 0;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.theme-dot:hover { transform: scale(1.12); }
+.theme-dot.active { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
+.theme-dot.t-midnight { background: linear-gradient(135deg, #101a36 52%, #7aa2ff 52%); }
+.theme-dot.t-sky { background: linear-gradient(135deg, #ffffff 52%, #2f8bff 52%); border-color: rgba(0,0,0,0.08); }
+.theme-dot.t-crimson { background: linear-gradient(135deg, #ffffff 52%, #d92035 52%); border-color: rgba(0,0,0,0.08); }
+
+/* ---------- field ---------- */
+.field-frame {
+  position: relative; border-radius: 22px; aspect-ratio: 1 / 1;
+  outline: none; overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+.field-frame canvas {
+  width: 100%; height: 100%; display: block; border-radius: 22px;
+  touch-action: none; -webkit-user-select: none; user-select: none; cursor: grab;
+}
+.field-frame.dragging canvas { cursor: grabbing; }
+.field-hint {
+  display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+  margin: 12px 0 2px; font-size: 12.5px; color: var(--faint); font-weight: 600; text-align: center;
+}
+.field-hint b { color: var(--dim); }
+/* ---------- fullscreen ---------- */
+.game-shell:fullscreen, .game-shell.is-expanded {
+  max-width: none; width: 100%; height: 100%; border-radius: 0;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.game-shell.is-expanded { position: fixed; inset: 0; z-index: 200; }
+.game-shell:fullscreen .field-frame, .game-shell.is-expanded .field-frame {
+  width: min(100%, calc(100vh - 96px)); margin: 0 auto;
+}
+.game-shell:fullscreen .field-hint, .game-shell.is-expanded .field-hint { display: none; }
+body.fs-lock { overflow: hidden; }
+/* ---------- toast / overlay ---------- */
+#toast {
+  position: absolute; left: 50%; bottom: 18px; transform: translate(-50%, 14px);
+  padding: 10px 20px; border-radius: 14px; font-size: 13.5px; font-weight: 700;
+  background: var(--glass-strong); border: 1px solid var(--border);
+  backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: var(--shadow); opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease; white-space: nowrap; max-width: 92%;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+.game-over {
+  position: absolute; inset: 0; display: none; place-items: center; padding: 18px;
+  background: color-mix(in srgb, var(--bg0) 34%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-radius: 22px; z-index: 5;
+}
+.game-over.show { display: grid; animation: fadein 0.35s ease; }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+.gov-card { text-align: center; padding: 26px 28px; max-width: 340px; width: 100%; background: var(--glass-strong); }
+.gov-card h3 { margin: 0 0 2px; font-size: 22px; letter-spacing: -0.02em; }
+.gov-card .gov-ar { font-family: 'Cairo', sans-serif; font-size: 13.5px; color: var(--dim); margin: 0 0 16px; }
+.gov-score {
+  font-size: 40px; font-weight: 900; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1.1;
+  background: linear-gradient(100deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.gov-label { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); margin-bottom: 16px; }
+.gov-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 18px; }
+.gov-stats .stat b { font-size: 17px; }
+.gov-card .btn { width: 100%; justify-content: center; }
+
+/* ---------- articles ---------- */
+.articles { padding: 26px 0 64px; }
+.articles .section-head { margin-bottom: 34px; }
+.articles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 22px; }
+.article { padding: 28px 26px 24px; display: flex; flex-direction: column; }
+.article-tag {
+  align-self: flex-start; font-size: 10.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent-ink); background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: 5px 12px; border-radius: 999px; margin-bottom: 14px; box-shadow: 0 6px 16px var(--glow);
+}
+.article h2 { font-size: 20.5px; letter-spacing: -0.02em; margin: 0 0 12px; line-height: 1.25; }
+.article h3 { font-size: 15px; letter-spacing: 0.01em; margin: 18px 0 7px; }
+.article p { font-size: 14.2px; color: var(--dim); margin: 0 0 11px; }
+.article ul { margin: 4px 0 10px; padding-left: 2px; list-style: none; display: grid; gap: 7px; }
+.article ul li { font-size: 14px; color: var(--dim); padding-left: 20px; position: relative; }
+.article ul li::before { content: ""; position: absolute; left: 2px; top: 8px; width: 7px; height: 7px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+.article .article-cta { margin-top: auto; padding-top: 15px; }
+.article .article-cta a {
+  display: inline-flex; align-items: center; gap: 7px; text-decoration: none;
+  font-weight: 800; font-size: 13.5px; color: var(--accent);
+}
+.article .article-cta a:hover { text-decoration: underline; }
+.article .article-cta svg { width: 13px; height: 13px; }
+
+/* ---------- footer ---------- */
+.footer-wrap { padding-bottom: 34px; }
+footer.site {
+  padding: 34px 30px 26px; border-radius: 26px;
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 30px;
+}
+.site .fbrand p { font-size: 13.5px; color: var(--dim); max-width: 30em; margin: 12px 0 0; }
+.site .fbrand .ar { font-family: 'Cairo', sans-serif; color: var(--faint); font-size: 13px; }
+.site h4 { font-size: 11.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); margin: 0 0 12px; }
+.site ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.site ul a { text-decoration: none; font-size: 14px; color: var(--dim); transition: color 0.15s; }
+.site ul a:hover { color: var(--accent); }
+.copy {
+  grid-column: 1 / -1; padding-top: 20px; margin-top: 4px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  font-size: 12.5px; color: var(--faint);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 940px) {
+  .hero { grid-template-columns: 1fr; gap: 34px; padding: 48px 0 46px; }
+  .nav-links a:not(.btn) { display: none; }
+  footer.site { grid-template-columns: 1fr 1fr; }
+  .site .fbrand { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) {
+  .wrap { padding: 0 14px; }
+  .nav { top: 8px; margin-top: 10px; padding: 9px 13px; }
+  .game-shell { padding: 12px; border-radius: 22px; }
+  .score-chip { min-width: 82px; padding: 6px 12px; }
+  .score-chip b { font-size: 17px; }
+  .icon-btn { width: 38px; height: 38px; }
+  .theme-dot { width: 23px; height: 23px; }
+  .hero h1 { font-size: clamp(31px, 10vw, 42px); }
+  footer.site { grid-template-columns: 1fr; padding: 26px 22px 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orb { animation: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+<div class="orbs" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+
+<nav class="nav glass wrap" aria-label="Main">
+  <a class="brand" href="#top">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l6 8h-4v8h-4v-8H6z" fill="currentColor" stroke="none"/></svg>
+    </span>
+    <span>ArrowMerge<small>Drag · Slide · Merge</small></span>
+  </a>
+  <div class="nav-links">
+    <a href="#how">How to Play</a>
+    <a href="#articles">Articles</a>
+    <a class="btn btn-primary" href="#play">Play Game</a>
+  </div>
+</nav>
+
+<main id="top">
+  <!-- ================= HERO ================= -->
+  <section class="hero wrap">
+    <div class="hero-text">
+      <span class="kicker"><i></i> Free manual puzzle · No downloads</span>
+      <h1>Slide the arrows.<br><span class="grad">Merge to 100 million.</span></h1>
+      <p class="sub">ArrowMerge is a drag-and-slide logic puzzle set in frosted glass. Grab any arrow block and pull it along its direction, weave through the traffic, and push two equal numbers together to fuse them into a bigger tile. A glowing Gate keeps releasing fresh arrows every four moves — keep the board breathing and climb toward 100,000,000.</p>
+      <p class="sub-ar">أسهم — اسحب الأسهم على الزجاج وادمج الأرقام حتى المئة مليون</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" id="ctaPlay" href="#play">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+          Play Game — Free
+        </a>
+        <a class="btn" href="#how">See the Rules</a>
+      </div>
+      <div class="trust">
+        <span>✦ Manual drag &amp; slide</span>
+        <span>✦ Infinite number scaling</span>
+        <span>✦ Spawn Gate pressure</span>
+        <span>✦ 3 glass themes</span>
+      </div>
+    </div>
+
+    <aside class="hero-card glass" id="how" aria-label="Game rules, stats and progression">
+      <h2>How ArrowMerge Works</h2>
+      <p class="card-sub">Three rules. The rest is spatial logic.</p>
+      <ul class="rules">
+        <li>
+          <span class="rule-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></span>
+          <span><b>Drag along the arrow.</b> Every block slides only along its own axis — sideways for ←/→ arrows, up and down for ↑/↓ arrows. Walls and other blocks stop it.</span>
+        </li>
+        <li>
+          <span class="rule-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/><path d="M11 7h4a2 2 0 0 1 2 2v4"/></svg></span>
+          <span><b>Push equals together.</b> Drag a block <em>into</em> a neighbor with the same number to fuse them: 4 + 4 → 8, and every tier keeps doubling — up to millions.</span>
+        </li>
+        <li>
+          <span class="rule-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="3"/><path d="M8 12h5"/><path d="m11 10 2 2-2 2"/></svg></span>
+          <span><b>Mind the Gate.</b> A new arrow slides out of the left-edge Gate every 4 moves. Keep its lane open — the board ends when nothing can move, not on a clock.</span>
+        </li>
+      </ul>
+      <div class="stats" aria-label="Your stats">
+        <div class="stat"><b id="statBest">0</b><span>Best Score</span></div>
+        <div class="stat"><b id="statGames">0</b><span>Games</span></div>
+        <div class="stat"><b id="statTile">2</b><span>Max Tile</span></div>
+      </div>
+      <div class="tracker" aria-label="Score progression toward 100 million">
+        <div class="tracker-head"><b>Score Progression</b><span id="trackerLabel">Next: 1K</span></div>
+        <div class="tracker-bar"><div class="tracker-fill" id="trackerFill"></div></div>
+        <div class="tracker-marks" id="trackerMarks">
+          <span data-m="1e3">1K</span><span data-m="1e4">10K</span><span data-m="1e5">100K</span><span data-m="1e6">1M</span><span data-m="1e7">10M</span><span data-m="1e8">100M</span>
+        </div>
+      </div>
+      <a class="btn btn-primary" href="#play">Start Playing</a>
+    </aside>
+  </section>
+
+  <!-- ================= GAME ================= -->
+  <section class="game-section wrap" id="play">
+    <div class="section-head">
+      <h2 class="section-title">The Glass Board</h2>
+      <p class="section-sub">Grab any arrow and pull it along its direction — drag <b>into</b> an equal number to merge. Mouse or finger only; nothing moves by itself.</p>
+    </div>
+    <div class="game-shell glass">
+      <div class="game-hud">
+        <div class="score-cluster">
+          <div class="score-chip"><span>Score</span><b id="scoreEl">0</b></div>
+          <div class="score-chip"><span>Best</span><b id="bestEl">0</b></div>
+        </div>
+        <div class="hud-controls">
+          <div class="theme-dots" role="group" aria-label="Theme switcher">
+            <button class="theme-dot t-midnight active" data-theme="midnight" aria-label="Deep navy theme" title="Deep Navy · Pure Black"></button>
+            <button class="theme-dot t-sky" data-theme="sky" aria-label="Sky blue theme" title="Sky Blue · Clean White"></button>
+            <button class="theme-dot t-crimson" data-theme="crimson" aria-label="Crimson theme" title="Crimson · Pure White"></button>
+          </div>
+          <button class="icon-btn" id="soundBtn" aria-label="Toggle sound" title="Sound on / off">
+            <svg id="icoSoundOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            <svg id="icoSoundOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="m16 9 5 6"/><path d="m21 9-5 6"/></svg>
+          </button>
+          <button class="icon-btn" id="restartBtn" aria-label="Restart game" title="Restart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.3"/><path d="M3 4v5h5"/></svg>
+          </button>
+          <button class="icon-btn" id="fsBtn" aria-label="Toggle fullscreen" title="Fullscreen (F)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6"/><path d="M3 3l7 7"/><path d="M15 21h6v-6"/><path d="M21 21l-7-7"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="field-frame glass" id="fieldFrame">
+        <canvas id="game" aria-label="ArrowMerge board. Drag arrow blocks along their direction and push equal numbers together to merge."></canvas>
+        <div id="toast" role="status"></div>
+        <div class="game-over" id="gameOver">
+          <div class="gov-card glass">
+            <h3>Board Locked</h3>
+            <p class="gov-ar">لا توجد حركات متبقية — أعد المحاولة</p>
+            <div class="gov-score" id="govScore">0</div>
+            <div class="gov-label">Final Score</div>
+            <div class="gov-stats">
+              <div class="stat"><b id="govBest">0</b><span>Best</span></div>
+              <div class="stat"><b id="govTile">2</b><span>Max Tile</span></div>
+            </div>
+            <button class="btn btn-primary" id="playAgain">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+              Play Again
+            </button>
+          </div>
+        </div>
+      </div>
+      <p class="field-hint">
+        <span><b>Drag</b> a block along its arrow — sideways for <b>←/→</b>, up &amp; down for <b>↑/↓</b></span>
+        <span><b>Drag INTO</b> an equal number to fuse them</span>
+      </p>
+    </div>
+  </section>
+  <!-- ================= ARTICLES ================= -->
+  <section class="articles wrap" id="articles">
+    <div class="section-head">
+      <h2 class="section-title">Think in Arrows</h2>
+      <p class="section-sub">Field notes on spatial reasoning, merge strategy and the long history of sliding block puzzles.</p>
+    </div>
+    <div class="articles-grid">
+      <article class="article glass" id="article-spatial">
+        <span class="article-tag">Brain Science</span>
+        <h2>How Arrow Logic Puzzles Boost Spatial Reasoning</h2>
+        <p>Spatial reasoning is the mind's ability to picture where things are, where they can go, and what happens when they move. Arrow logic puzzles are an unusually pure trainer of this skill: every block on the board carries a direction, and every drag forces you to simulate an entire chain of movement in your head before your finger commits to it.</p>
+        <h3>Direction is a grammar</h3>
+        <p>In a drag-and-slide arrow puzzle, each tile obeys a simple rule — it may only travel along the axis its arrow points to. That constraint turns the board into a little language: horizontal arrows can weave through columns, vertical arrows can thread gaps between rows, and obstacles are simply tiles whose grammar disagrees with yours. Learning to read that grammar is spatial reasoning in its most literal form.</p>
+        <h3>Planning under constraint</h3>
+        <p>Psychologists call the mental workspace we use for these simulations "visuospatial working memory." It is the same system you use to pack a suitcase, merge into highway traffic, or follow a recipe in a cluttered kitchen. A puzzle that asks you to slide one tile out of the way so another can pass, two moves before the merge you actually want, exercises that workspace the way a hill workout exercises legs.</p>
+        <ul>
+          <li>Mental rotation: picturing how a lane of arrows looks after three drags.</li>
+          <li>Constraint tracking: remembering which tiles can and cannot move.</li>
+          <li>Sequencing: ordering slides so the final one lands your merge.</li>
+          <li>Flexibility: switching plans when the Gate delivers an unwelcome arrow.</li>
+        </ul>
+        <p>Because ArrowMerge never uses a timer, the training is honest: you are rewarded for reading the board, not for panic. Ten minutes of deliberate sliding is enough to feel your eye getting faster at spotting lanes and escape routes — on the glass board and in the real world.</p>
+        <p class="article-cta"><a href="#play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>Train your arrow logic — play free</a></p>
+      </article>
+
+      <article class="article glass" id="article-merge">
+        <span class="article-tag">Strategy Guide</span>
+        <h2>Mastering the Merge: Strategies for Reaching 100 Million</h2>
+        <p>Reaching 100,000,000 in a number merge game sounds impossible until you understand the arithmetic of doubling. Every 2 you fuse is a seed: it takes 27 doublings to cross 100 million, and every doubling is just one honest merge. The game is not about speed — it is about never wasting a tile and never letting the board lock.</p>
+        <h3>Respect the Gate rhythm</h3>
+        <p>ArrowMerge releases a new arrow from the edge Gate every four moves, which means your board has a heartbeat you can plan around. Count your drags: after the third move, make sure the Gate lane (left edge, middle row) is open so the delivery slides in cleanly. Predictable pressure is manageable pressure — the players who lose to the Gate are the ones surprised by it.</p>
+        <h3>Build a merge conveyor</h3>
+        <p>Strong players arrange tiles in ascending order along one lane — 2, 4, 8, 16 — like a little factory line. New low tiles enter at the Gate end and travel down the line, merging one rung at a time. High tiles rest in the far corner, where fewer arrows are needed to protect them. The board stops feeling like chaos and starts feeling like an assembly line.</p>
+        <ul>
+          <li>Park equal tiles side by side first; merge them when you can chain two tiers.</li>
+          <li>Keep one open lane in each direction — vertical and horizontal arteries.</li>
+          <li>When the board is 70% full, spend three moves organizing instead of one move merging.</li>
+          <li>Protect your highest tile in a corner; a flipped high tile kills runs faster than a full board.</li>
+          <li>Milestone thinking: 1K, 100K, 1M, 10M, 100M — each one is a new puzzle shape.</li>
+        </ul>
+        <h3>The last 10×</h3>
+        <p>The final stretch to 100 million is one long merge chain of big tiles: 65536 fusing into 131072, then 262144, then 524288, then 1048576 and on. Plan five merges ahead, never break your conveyor, and treat every free cell as capital. Masters do not play faster at the end — they play quieter.</p>
+        <p class="article-cta"><a href="#play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>Start the climb to 100 million</a></p>
+      </article>
+
+      <article class="article glass" id="article-evolution">
+        <span class="article-tag">Game History</span>
+        <h2>The Evolution of Sliding Block Puzzle Games</h2>
+        <p>Few ideas in gaming have lived as long as the sliding block. From a Victorian parlour tray to a glowing sheet of frosted glass, the genre keeps returning because it teaches the same timeless lesson: a constrained space plus one honest push is enough to occupy the human mind for hours.</p>
+        <h3>The 15-puzzle craze</h3>
+        <p>In 1880, a simple tray of fifteen numbered squares swept the world. Players slid tiles into one empty slot, chasing order out of scramble. It had no story, no graphics and no clock — yet it sold by the millions and proved that movement itself, restricted by walls and neighbours, could be a complete game.</p>
+        <h3>Unblock and the logic of getting out of the way</h3>
+        <p>A century later, sliding puzzles found a new star: Unblock Me and its countless cousins, where horizontal and vertical blocks jam a grid and your job is to slide them aside until one can escape. Direction became the core resource — a block's orientation told you everything it could ever do. The genre's focus shifted from sorting to spatial problem solving.</p>
+        <h3>Merging changes everything</h3>
+        <p>The 2014 wave of merge games added a chemical reaction to sliding: colliding tiles of equal value fuse into something greater. For the first time, conservation broke — every good move created new material, and every session became a story of growth from 2 to 2048 and far beyond.</p>
+        <h3>The drag era</h3>
+        <p>Modern browser puzzles like ArrowMerge unite all three currents: the 15-puzzle's tactile slide, Unblock's directional logic, and the merge game's doubling engine — then hand you the tiles directly. There is no keyboard mediation, no automatic motion; you pull the arrows with your own hand while a glass Gate keeps feeding the board. Three centuries after the first tray, the genre is still asking the same irresistible question: can you make room for one more?</p>
+        <p class="article-cta"><a href="#play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>Play the newest chapter in sliding puzzles</a></p>
+      </article>
+    </div>
+  </section>
+
+</main>
+<div class="footer-wrap wrap">
+  <footer class="site glass">
+    <div class="fbrand">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l6 8h-4v8h-4v-8H6z" fill="currentColor" stroke="none"/></svg>
+        </span>
+        <span>ArrowMerge<small>Drag · Slide · Merge</small></span>
+      </a>
+      <p>A frosted-glass arrow logic puzzle. Drag every block by hand, merge equal numbers through infinite tiers, and keep the Gate's lane breathing. No timers, no auto-play — only your hand and a board that never gives up on doubling. All sound is synthesized live with the Web Audio API.</p>
+      <p class="ar">أسهم — لعبة سحب ودمج بلا مؤقتات ولا حركات آلية</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#play">Play the Game</a></li>
+        <li><a href="#how">How to Play</a></li>
+        <li><a href="#articles">Strategy Articles</a></li>
+        <li><a href="#top">Back to Top</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Learn</h4>
+      <ul>
+        <li><a href="#article-spatial">Arrow Logic &amp; Spatial Reasoning</a></li>
+        <li><a href="#article-merge">Strategies for 100 Million</a></li>
+        <li><a href="#article-evolution">Evolution of Sliding Puzzles</a></li>
+        <li><a href="#play">Beat Your Best Score</a></li>
+      </ul>
+    </div>
+    <div class="copy">
+      <span>© 2026 ArrowMerge. All rights reserved.</span>
+      <span>Free forever · Manual drag only · Infinite scaling</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+/* ============================================================
+   0. Utilities, formatters, storage
+   ============================================================ */
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+const SUFFIX = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx'];
+function compactNum(n) {
+  if (n < 1000) return String(Math.round(n));
+  const exp = Math.min(SUFFIX.length - 1, Math.floor(Math.log10(n) / 3));
+  const mant = n / Math.pow(10, exp * 3);
+  const digits = mant >= 100 ? 0 : mant >= 10 ? 1 : 2;
+  let s = mant.toFixed(digits);
+  if (s.indexOf('.') >= 0) s = s.replace(/\.?0+$/, '');
+  return s + SUFFIX[exp];
+}
+const fmtScore = (n) => (n < 1e6 ? Math.round(n).toLocaleString('en-US') : compactNum(n));
+const fmtTile = (v) => (v <= 9999 ? Math.round(v).toLocaleString('en-US') : compactNum(v));
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } }
+};
+
+/* ============================================================
+   1. Theme palettes (canvas) — page chrome handled by CSS vars
+   ============================================================ */
+const THEMES = {
+  midnight: {
+    dark: true,
+    field:  { fill: 'rgba(10,17,36,0.44)', border: 'rgba(255,255,255,0.13)', well: 'rgba(150,180,255,0.10)', sheen: 'rgba(255,255,255,0.05)' },
+    dirArrows: ['#7aa2ff', '#66e0ff', '#9d8cff', '#5fd3ba'],
+    particles: ['#8fb3ff', '#a9c6ff', '#7aa2ff', '#66e0ff', '#c9d8ff'],
+    glowRGB: '122,162,255',
+    floats: { normal: 'rgba(226,236,255,0.95)', big: 'rgba(143,208,255,1)', shadow: 'rgba(0,0,0,0.45)' },
+    stops: [
+      { v: 2,    bg: '#1b2440', fg: '#dfe8ff' },
+      { v: 8,    bg: '#223056', fg: '#e6eeff' },
+      { v: 32,   bg: '#2b3f74', fg: '#eef4ff' },
+      { v: 128,  bg: '#3550a0', fg: '#f2f6ff' },
+      { v: 512,  bg: '#4059c0', fg: '#ffffff' },
+      { v: 4096, bg: '#5a68d6', fg: '#ffffff' },
+      { v: 32768, bg: '#6a76ff', fg: '#ffffff' }
+    ],
+    beyond: '#9aa4ff'
+  },
+  sky: {
+    dark: false,
+    field:  { fill: 'rgba(255,255,255,0.52)', border: 'rgba(255,255,255,0.92)', well: 'rgba(32,135,255,0.10)', sheen: 'rgba(255,255,255,0.35)' },
+    dirArrows: ['#2f8bff', '#0fa8dc', '#7a5cff', '#0f9f8f'],
+    particles: ['#9cd2ff', '#6db4ff', '#3f9bff', '#2f8bff', '#cfe9ff'],
+    glowRGB: '47,139,255',
+    floats: { normal: 'rgba(11,66,130,0.95)', big: 'rgba(16,110,214,1)', shadow: 'rgba(255,255,255,0.72)' },
+    stops: [
+      { v: 2,    bg: '#ffffff', fg: '#1d6ff2' },
+      { v: 8,    bg: '#eaf5ff', fg: '#1a76ea' },
+      { v: 32,   bg: '#d2eaff', fg: '#1264d6' },
+      { v: 128,  bg: '#a9d7ff', fg: '#0c55bb' },
+      { v: 512,  bg: '#63aaff', fg: '#ffffff' },
+      { v: 4096, bg: '#3f97ff', fg: '#ffffff' },
+      { v: 32768, bg: '#2f8bff', fg: '#ffffff' }
+    ],
+    beyond: '#0f6ae0'
+  },
+  crimson: {
+    dark: false,
+    field:  { fill: 'rgba(255,255,255,0.56)', border: 'rgba(255,255,255,0.95)', well: 'rgba(217,32,53,0.09)', sheen: 'rgba(255,255,255,0.4)' },
+    dirArrows: ['#d92035', '#ff6a4d', '#8f0a1c', '#ff8f6b'],
+    particles: ['#ffb3bc', '#ff8a97', '#ff5a6e', '#d92035', '#ffd9dd'],
+    glowRGB: '217,32,53',
+    floats: { normal: 'rgba(150,15,35,0.95)', big: 'rgba(217,32,53,1)', shadow: 'rgba(255,255,255,0.72)' },
+    stops: [
+      { v: 2,    bg: '#ffffff', fg: '#c1172d' },
+      { v: 8,    bg: '#ffeef1', fg: '#c1172d' },
+      { v: 32,   bg: '#ffd9de', fg: '#b31227' },
+      { v: 128,  bg: '#ffb6c0', fg: '#a50f22' },
+      { v: 512,  bg: '#f05266', fg: '#ffffff' },
+      { v: 4096, bg: '#e23349', fg: '#ffffff' },
+      { v: 32768, bg: '#d92035', fg: '#ffffff' }
+    ],
+    beyond: '#a50f22'
+  }
+};
+let themeKey = document.documentElement.dataset.theme || 'midnight';
+if (!THEMES[themeKey]) themeKey = 'midnight';
+const pal = () => THEMES[themeKey];
+
+const mixCache = new Map();
+function hexToRgb(h) {
+  const n = parseInt(h.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+function mixHex(a, b, t) {
+  const A = hexToRgb(a), B = hexToRgb(b);
+  return 'rgb(' + Math.round(lerp(A[0], B[0], t)) + ',' + Math.round(lerp(A[1], B[1], t)) + ',' + Math.round(lerp(A[2], B[2], t)) + ')';
+}
+function styleFor(v) {
+  const key = themeKey + ':' + v;
+  let s = mixCache.get(key);
+  if (s) return s;
+  const stops = pal().stops;
+  let bg, fg;
+  if (v <= stops[0].v) { bg = stops[0].bg; fg = stops[0].fg; }
+  else if (v >= stops[stops.length - 1].v) {
+    const last = stops[stops.length - 1];
+    const t = clamp((Math.log2(v) - Math.log2(last.v)) / 4, 0, 1);
+    bg = mixHex(last.bg, pal().beyond, t); fg = last.fg;
+  } else {
+    for (let i = 0; i < stops.length - 1; i++) {
+      const a = stops[i], b = stops[i + 1];
+      if (v >= a.v && v <= b.v) {
+        const t = (Math.log2(v) - Math.log2(a.v)) / (Math.log2(b.v) - Math.log2(a.v));
+        bg = mixHex(a.bg, b.bg, t); fg = mixHex(a.fg, b.fg, t);
+        break;
+      }
+    }
+  }
+  const glow = v >= 256 ? clamp(0.12 + Math.log2(v / 256) * 0.13, 0, 1) : 0;
+  s = { bg, fg, glow };
+  mixCache.set(key, s);
+  return s;
+}
+
+/* ============================================================
+   2. Audio engine — Web Audio only, everything synthesized
+   ============================================================ */
+const AudioSys = (() => {
+  let ctx = null, master = null;
+  let muted = !!store.get('am3_muted', false);
+
+  function ensure() {
+    if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    ctx = new AC();
+    master = ctx.createGain();
+    master.gain.value = muted ? 0 : 0.5;
+    master.connect(ctx.destination);
+  }
+  function tone(freq, o) {
+    if (!ctx || muted) return;
+    o = o || {};
+    const t0 = ctx.currentTime + (o.delay || 0);
+    const dur = o.dur || 0.3;
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(freq, t0);
+    if (o.glide) osc.frequency.exponentialRampToValueAtTime(Math.max(30, o.glide), t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(o.gain || 0.07, t0 + (o.attack || 0.006));
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(master);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
+  }
+  function noise(o) {
+    if (!ctx || muted) return;
+    const t0 = ctx.currentTime + (o.delay || 0);
+    const dur = o.dur || 0.2;
+    const len = Math.max(1, Math.floor(ctx.sampleRate * dur));
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const f = ctx.createBiquadFilter(); f.type = 'bandpass';
+    f.frequency.setValueAtTime(o.freq || 600, t0);
+    if (o.glide) f.frequency.exponentialRampToValueAtTime(Math.max(60, o.glide), t0 + dur);
+    f.Q.value = o.q || 0.8;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(o.gain || 0.05, t0 + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(f); f.connect(g); g.connect(master);
+    src.start(t0);
+  }
+  const NOTES = [392, 440, 523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1174.66, 1318.51, 1567.98, 1760, 2093, 2637];
+  return {
+    ensure,
+    pickup() { tone(540, { dur: 0.055, gain: 0.024, type: 'triangle' }); },
+    bump() { tone(130, { dur: 0.09, gain: 0.03, type: 'sine', glide: 84 }); },
+    slide(dist) { noise({ dur: 0.13, freq: 480 + clamp(dist * 240, 0, 420), glide: 230, gain: 0.04, q: 0.7 }); },
+    merge(v) {
+      const i = clamp(Math.round(Math.log2(v)) - 2, 0, NOTES.length - 1);
+      const f = NOTES[i];
+      tone(f, { dur: 0.32, gain: 0.06, type: 'sine' });
+      tone(f * 2, { dur: 0.2, gain: 0.02, type: 'triangle', delay: 0.01 });
+      tone(f / 2, { dur: 0.38, gain: 0.026, type: 'sine', delay: 0.02 });
+    },
+    gate() {
+      noise({ dur: 0.45, freq: 260, glide: 900, gain: 0.035, q: 0.9 });
+      tone(659.25, { dur: 0.28, gain: 0.032, delay: 0.13 });
+      tone(987.77, { dur: 0.34, gain: 0.026, delay: 0.2 });
+    },
+    over() {
+      const seq = [523.25, 392, 329.63, 261.63];
+      seq.forEach((f, i) => tone(f, { dur: 0.5, gain: 0.05, delay: i * 0.16, type: 'sine' }));
+      noise({ dur: 0.7, freq: 300, glide: 90, gain: 0.03 });
+    },
+    welcome() {
+      tone(392, { dur: 0.35, gain: 0.045 });
+      tone(523.25, { dur: 0.45, gain: 0.045, delay: 0.1 });
+      tone(659.25, { dur: 0.55, gain: 0.04, delay: 0.2 });
+    },
+    click() { tone(620, { dur: 0.06, gain: 0.03, type: 'sine' }); },
+    get muted() { return muted; },
+    setMuted(m) { muted = m; store.set('am3_muted', m); if (master) master.gain.value = m ? 0 : 0.5; }
+  };
+})();
+
+/* ============================================================
+   3. DOM refs
+   ============================================================ */
+const canvas = $('#game');
+const ctx = canvas.getContext('2d');
+const frameEl = $('#fieldFrame');
+const scoreEl = $('#scoreEl');
+const bestEl = $('#bestEl');
+const statBest = $('#statBest');
+const statGames = $('#statGames');
+const statTile = $('#statTile');
+const toastEl = $('#toast');
+const gameOverEl = $('#gameOver');
+const govScore = $('#govScore');
+const govBest = $('#govBest');
+const govTile = $('#govTile');
+const trackerFill = $('#trackerFill');
+const trackerLabel = $('#trackerLabel');
+const trackerMarks = $('#trackerMarks');
+
+/* ============================================================
+   4. Game constants
+   ============================================================ */
+const GRID = 5, CELL = 134.4, PAD = 24, FIELD = PAD * 2 + GRID * CELL; // 720
+const GATE_ROW = 2, GATE_EVERY = 4, QUEUE_MAX = 3;
+const UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3;
+const isHoriz = (d) => d === RIGHT || d === LEFT;
+
+/* ============================================================
+   5. State
+   ============================================================ */
+let board = [];
+let blocks = [];
+let drag = null;
+let state = 'playing';
+let score = 0, displayScore = 0;
+let best = Math.max(0, store.get('am3_best', 0) || 0);
+let bestTile = Math.max(2, store.get('am3_maxtile', 2) || 2);
+let games = Math.max(0, store.get('am3_games', 0) || 0);
+let gate = { count: 0, queue: 0, flash: -9, spawned: 0 };
+let particles = [], floats = [], shakeT = 0, shakeMag = 0;
+let nowT = 0, lastT = 0, renderDirty = true;
+let greeted = false, toastTimer = 0;
+
+function makeBlock(v, r, c, dir) {
+  return { v, r, c, dir, dead: false, ghost: false, anim: null, spawnT: nowT, popT: -9 };
+}
+function greet() {
+  AudioSys.ensure();
+  if (!greeted) { greeted = true; AudioSys.welcome(); }
+}
+
+/* ============================================================
+   6. Spawn Gate — new arrows slide out of the left port every
+      GATE_EVERY moves; heavier tiers unlock as the Gate ages.
+   ============================================================ */
+const SPAWN_PHASES = [
+  [[2, 70], [4, 25], [8, 5]],
+  [[2, 45], [4, 35], [8, 15], [16, 5]],
+  [[2, 25], [4, 30], [8, 25], [16, 15], [32, 5]],
+  [[2, 15], [4, 25], [8, 25], [16, 20], [32, 10], [64, 5]]
+];
+function pickSpawnValue() {
+  const phase = Math.min(SPAWN_PHASES.length - 1, Math.floor(gate.spawned / 16));
+  const table = SPAWN_PHASES[phase];
+  let roll = Math.random() * 100, acc = 0;
+  for (let i = 0; i < table.length; i++) {
+    acc += table[i][1];
+    if (roll < acc) return table[i][0];
+  }
+  return table[0][0];
+}
+function advanceGate() {
+  gate.count++;
+  if (gate.count >= GATE_EVERY) {
+    gate.count = 0;
+    gate.queue = Math.min(QUEUE_MAX, gate.queue + 1);
+    gate.flash = nowT;
+  }
+  flushGate();
+}
+function flushGate() {
+  let spawned = false;
+  while (gate.queue > 0 && !board[GATE_ROW][0]) {
+    gate.queue--;
+    gate.spawned++;
+    const b = makeBlock(pickSpawnValue(), GATE_ROW, 0, (Math.random() * 4) | 0);
+    b.spawnSlide = true;
+    board[GATE_ROW][0] = b;
+    blocks.push(b);
+    spawned = true;
+    burstCell(GATE_ROW, 0, 8);
+  }
+  if (spawned) {
+    AudioSys.gate();
+    shakeMag = Math.max(shakeMag, 1.2); shakeT = 0.12;
+    renderDirty = true;
+    checkGameOver();   // a spawn can fill the very last free cell — the board may now be locked
+  }
+}
+
+/* ============================================================
+   7. Legal-move detection & game over
+   ============================================================ */
+function legalMoveExists() {
+  if (gate.queue > 0 && !board[GATE_ROW][0]) return true;
+  for (let i = 0; i < blocks.length; i++) {
+    const b = blocks[i];
+    const h = isHoriz(b.dir);
+    for (let s = -1; s <= 1; s += 2) {
+      const rr = b.r + (h ? 0 : s);
+      const cc = b.c + (h ? s : 0);
+      if (rr < 0 || rr >= GRID || cc < 0 || cc >= GRID) continue;
+      const t = board[rr][cc];
+      if (!t || t.v === b.v) return true;
+    }
+  }
+  return false;
+}
+function checkGameOver() {
+  if (state === 'playing' && !legalMoveExists()) endGame();
+}
+function endGame() {
+  state = 'over';
+  games++;
+  store.set('am3_games', games);
+  if (score > best) { best = score; store.set('am3_best', best); }
+  govScore.textContent = fmtScore(score);
+  govBest.textContent = fmtScore(best);
+  govTile.textContent = fmtTile(bestTile);
+  gameOverEl.classList.add('show');
+  AudioSys.over();
+  syncHud();
+  syncStats();
+  renderDirty = true;
+}
+
+/* ============================================================
+   8. Game flow
+   ============================================================ */
+function restartGame() {
+  board = Array.from({ length: GRID }, () => Array(GRID).fill(null));
+  blocks = []; particles = []; floats = []; drag = null;
+  state = 'playing'; score = 0; displayScore = 0;
+  gate = { count: 0, queue: 0, flash: -9, spawned: 0 };
+  shakeT = 0; shakeMag = 0;
+  gameOverEl.classList.remove('show');
+  toastEl.classList.remove('show');
+  frameEl.classList.remove('dragging');
+
+  const vals = [2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 8, 8];
+  const spots = [];
+  for (let r = 0; r < GRID; r++) {
+    for (let c = 0; c < GRID; c++) {
+      if (r === GATE_ROW && c === 0) continue;   // keep the Gate lane breathing
+      spots.push([r, c]);
+    }
+  }
+  for (let i = spots.length - 1; i > 0; i--) {
+    const j = (Math.random() * (i + 1)) | 0;
+    const t = spots[i]; spots[i] = spots[j]; spots[j] = t;
+  }
+  vals.forEach((v, i) => {
+    const r = spots[i][0], c = spots[i][1];
+    const b = makeBlock(v, r, c, (Math.random() * 4) | 0);
+    b.popT = nowT + i * 0.06;
+    board[r][c] = b;
+    blocks.push(b);
+  });
+  syncHud();
+  syncStats();
+  renderDirty = true;
+}
+function updateBest() {
+  if (score > best) {
+    best = score;
+    store.set('am3_best', best);
+    syncStats();
+  }
+}
+function noteTile(v) {
+  if (v > bestTile) {
+    bestTile = v;
+    store.set('am3_maxtile', bestTile);
+    if (v >= 1024) showToast('✨ ' + fmtTile(v) + ' tile — milestone reached!');
+    syncStats();
+  }
+}
+function syncHud() {
+  bestEl.textContent = fmtScore(best);
+  if (displayScore === 0) scoreEl.textContent = fmtScore(score);
+}
+const MILES = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8];
+const MILE_LABEL = { 1000: '1K', 10000: '10K', 100000: '100K', 1000000: '1M', 10000000: '10M', 100000000: '100M' };
+function syncTracker() {
+  let prev = 0, next = null;
+  for (let i = 0; i < MILES.length; i++) {
+    if (best < MILES[i]) { next = MILES[i]; break; }
+    prev = MILES[i];
+  }
+  let pct;
+  if (next === null) {
+    pct = 100;
+    trackerLabel.textContent = '★ 100M club — legendary';
+  } else {
+    pct = clamp((best - prev) / (next - prev), 0, 1) * 100;
+    trackerLabel.textContent = 'Best ' + fmtScore(best) + ' · next ' + MILE_LABEL[next];
+  }
+  trackerFill.style.width = pct.toFixed(1) + '%';
+  const marks = trackerMarks.querySelectorAll('span');
+  for (let i = 0; i < marks.length; i++) {
+    marks[i].classList.toggle('done', Number(marks[i].dataset.m) <= best);
+  }
+}
+function syncStats() {
+  statBest.textContent = fmtScore(best);
+  statGames.textContent = Math.round(games).toLocaleString('en-US');
+  statTile.textContent = fmtTile(bestTile);
+  syncTracker();
+}
+function showToast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+}
+
+/* ============================================================
+   9. Drag engine — manual pointer control only (mouse & touch).
+      There is deliberately NO auto-play or bot movement of any
+      kind; blocks only ever move because a human pulled them.
+   ============================================================ */
+function freeRun(r, c, axisH, sign) {
+  let n = 0, rr = r, cc = c;
+  for (;;) {
+    if (axisH) cc += sign; else rr += sign;
+    if (rr < 0 || rr >= GRID || cc < 0 || cc >= GRID) break;
+    if (board[rr][cc]) break;
+    n++;
+  }
+  return n;
+}
+function beyondCell(r, c, axisH, sign, run) {
+  const rr = r + (axisH ? 0 : sign * (run + 1));
+  const cc = c + (axisH ? sign * (run + 1) : 0);
+  if (rr < 0 || rr >= GRID || cc < 0 || cc >= GRID) return null;
+  return board[rr][cc];
+}
+function pointLogical(e) {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: (e.clientX - rect.left) * (FIELD / rect.width),
+    y: (e.clientY - rect.top) * (FIELD / rect.height)
+  };
+}
+function cellFromPoint(x, y) {
+  const c = Math.floor((x - PAD) / CELL);
+  const r = Math.floor((y - PAD) / CELL);
+  if (r < 0 || r >= GRID || c < 0 || c >= GRID) return null;
+  return { r, c };
+}
+
+canvas.addEventListener('pointerdown', (e) => {
+  greet();
+  if (state !== 'playing' || drag) return;
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  const p = pointLogical(e);
+  const cell = cellFromPoint(p.x, p.y);
+  if (!cell) return;
+  const b = board[cell.r][cell.c];
+  if (!b) return;
+  const axisH = isHoriz(b.dir);
+  drag = {
+    b, axisH,
+    r0: b.r, c0: b.c,
+    startX: p.x, startY: p.y,
+    runPos: freeRun(b.r, b.c, axisH, 1),
+    runNeg: freeRun(b.r, b.c, axisH, -1),
+    disp: 0, target: 0, mergeDir: 0, mergeBlock: null, moved: false
+  };
+  frameEl.classList.add('dragging');
+  AudioSys.pickup();
+  renderDirty = true;
+  if (e.cancelable) e.preventDefault();
+});
+window.addEventListener('pointermove', (e) => {
+  if (!drag) return;
+  const p = pointLogical(e);
+  const rawPx = drag.axisH ? (p.x - drag.startX) : (p.y - drag.startY);
+  let raw = rawPx / CELL;
+  let mergeDir = 0, mergeBlock = null;
+
+  if (raw > drag.runPos + 0.25) {
+    const t = beyondCell(drag.r0, drag.c0, drag.axisH, 1, drag.runPos);
+    if (t && t.v === drag.b.v) {
+      mergeDir = 1; mergeBlock = t;
+      raw = Math.min(raw, drag.runPos + 0.6);
+    } else {
+      raw = Math.min(raw, drag.runPos + 0.07);
+    }
+  } else if (raw < -drag.runNeg - 0.25) {
+    const t = beyondCell(drag.r0, drag.c0, drag.axisH, -1, drag.runNeg);
+    if (t && t.v === drag.b.v) {
+      mergeDir = -1; mergeBlock = t;
+      raw = Math.max(raw, -drag.runNeg - 0.6);
+    } else {
+      raw = Math.max(raw, -drag.runNeg - 0.07);
+    }
+  }
+  let target;
+  if (mergeDir > 0) target = Math.max(drag.runPos, raw);
+  else if (mergeDir < 0) target = Math.min(-drag.runNeg, raw);
+  else target = clamp(raw, -drag.runNeg, drag.runPos);
+
+  if (target !== drag.target) drag.moved = true;
+  drag.mergeDir = mergeDir;
+  drag.mergeBlock = mergeBlock;
+  drag.target = target;
+  renderDirty = true;
+});
+function endDrag(commit) {
+  if (!drag) return;
+  const d = drag;
+  drag = null;
+  frameEl.classList.remove('dragging');
+  if (!commit) { renderDirty = true; return; }
+  if (d.mergeDir !== 0) {
+    const run = d.mergeDir > 0 ? d.runPos : d.runNeg;
+    const t = beyondCell(d.r0, d.c0, d.axisH, d.mergeDir, run);
+    if (t && t.v === d.b.v) { commitMerge(d, t); return; }
+  }
+  const cells = Math.round(clamp(d.target, -d.runNeg, d.runPos));
+  if (cells !== 0) commitMove(d, cells);
+  else { AudioSys.bump(); renderDirty = true; }
+}
+window.addEventListener('pointerup', () => endDrag(true));
+window.addEventListener('pointercancel', () => endDrag(false));
+
+function visPos(d) {
+  return {
+    r: d.r0 + (d.axisH ? 0 : d.disp),
+    c: d.c0 + (d.axisH ? d.disp : 0)
+  };
+}
+function commitMove(d, cells) {
+  const b = d.b;
+  const nr = d.r0 + (d.axisH ? 0 : cells);
+  const nc = d.c0 + (d.axisH ? cells : 0);
+  board[d.r0][d.c0] = null;
+  b.r = nr; b.c = nc;
+  board[nr][nc] = b;
+  const vp = visPos(d);
+  if (Math.abs(vp.r - nr) > 0.001 || Math.abs(vp.c - nc) > 0.001) {
+    b.anim = { t0: nowT, dur: 0.09, fromR: vp.r, fromC: vp.c, toR: nr, toC: nc, fade: false };
+  }
+  AudioSys.slide(Math.abs(cells));
+  advanceGate();
+  checkGameOver();
+  renderDirty = true;
+}
+function commitMerge(d, t) {
+  const b = d.b;
+  const vp = visPos(d);
+  board[d.r0][d.c0] = null;
+  b.ghost = true;
+  b.anim = { t0: nowT, dur: 0.13, fromR: vp.r, fromC: vp.c, toR: t.r, toC: t.c, fade: true };
+
+  t.v *= 2;
+  t.popT = nowT;
+  score += t.v;
+  updateBest();
+  noteTile(t.v);
+  AudioSys.merge(t.v);
+  burstCell(t.r, t.c, t.v);
+  floatTextCell(t.r, t.c, '+' + fmtScore(t.v), t.v >= 512);
+  shakeMag = Math.max(shakeMag, t.v >= 1024 ? 4 : 2.2);
+  shakeT = 0.18;
+  advanceGate();
+  checkGameOver();
+  renderDirty = true;
+}
+function removeBlock(b) {
+  b.dead = true;
+  if (b.r >= 0 && b.r < GRID && b.c >= 0 && b.c < GRID && board[b.r][b.c] === b) board[b.r][b.c] = null;
+  const i = blocks.indexOf(b);
+  if (i >= 0) blocks.splice(i, 1);
+  renderDirty = true;
+}
+/* ============================================================
+   10. Effects — particles and floating scores (logical coords)
+   ============================================================ */
+function burstCell(r, c, amount) {
+  const cx = PAD + c * CELL + CELL / 2;
+  const cy = PAD + r * CELL + CELL / 2;
+  const n = clamp(Math.round(6 + Math.log2(Math.max(2, amount)) * 1.6), 7, 22);
+  const colors = pal().particles;
+  for (let i = 0; i < n; i++) {
+    const ang = Math.random() * Math.PI * 2;
+    const sp = 60 + Math.random() * 190;
+    const life = 0.5 + Math.random() * 0.5;
+    particles.push({
+      x: cx + Math.cos(ang) * 10, y: cy + Math.sin(ang) * 10,
+      vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - 60,
+      life: life, maxLife: life,
+      size: 2.2 + Math.random() * 3.4,
+      color: colors[(Math.random() * colors.length) | 0]
+    });
+  }
+  renderDirty = true;
+}
+function floatTextCell(r, c, text, big) {
+  floats.push({
+    x: PAD + c * CELL + CELL / 2,
+    y: PAD + r * CELL + 26,
+    text: text, t: 0,
+    dur: big ? 1.25 : 1.0,
+    big: !!big
+  });
+  renderDirty = true;
+}
+
+/* ============================================================
+   11. Canvas renderer — everything drawn in 720-unit field space
+   ============================================================ */
+function rr(x, y, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+function drawArrow(px, py, size, dir, color, alpha) {
+  const ang = [-Math.PI / 2, 0, Math.PI / 2, Math.PI][dir];
+  ctx.save();
+  ctx.translate(px, py);
+  ctx.rotate(ang);
+  ctx.globalAlpha *= alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = Math.max(2, size * 0.13);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  const s = size * 0.5;
+  ctx.beginPath();
+  ctx.moveTo(-s * 0.82, 0);
+  ctx.lineTo(s * 0.42, 0);
+  ctx.moveTo(-s * 0.02, -s * 0.6);
+  ctx.lineTo(s * 0.6, 0);
+  ctx.lineTo(-s * 0.02, s * 0.6);
+  ctx.stroke();
+  ctx.restore();
+}
+function drawField() {
+  const p = pal();
+  rr(2, 2, FIELD - 4, FIELD - 4, 20);
+  ctx.fillStyle = p.field.fill;
+  ctx.fill();
+  const sheen = ctx.createLinearGradient(0, 0, 0, FIELD);
+  sheen.addColorStop(0, p.field.sheen);
+  sheen.addColorStop(0.55, 'rgba(255,255,255,0)');
+  rr(2, 2, FIELD - 4, FIELD - 4, 20);
+  ctx.fillStyle = sheen;
+  ctx.fill();
+  ctx.globalAlpha = 0.55;
+  ctx.fillStyle = p.field.well;
+  for (let r = 0; r < GRID; r++) {
+    for (let c = 0; c < GRID; c++) {
+      rr(PAD + c * CELL + 7, PAD + r * CELL + 7, CELL - 14, CELL - 14, 15);
+      ctx.fill();
+    }
+  }
+  ctx.globalAlpha = 1;
+  rr(2.5, 2.5, FIELD - 5, FIELD - 5, 20);
+  ctx.strokeStyle = p.field.border;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}
+function drawGate() {
+  const p = pal();
+  const cx = 14, cy = PAD + GATE_ROW * CELL + CELL / 2;
+  const gTop = cy - 54, gH = 108;
+  const rem = clamp(1 - (nowT - gate.flash) / 0.42, 0, 1);
+
+  const halo = ctx.createRadialGradient(cx, cy, 4, cx, cy, 96);
+  halo.addColorStop(0, 'rgba(' + p.glowRGB + ',' + (0.28 + rem * 0.42) + ')');
+  halo.addColorStop(1, 'rgba(' + p.glowRGB + ',0)');
+  ctx.fillStyle = halo;
+  ctx.fillRect(0, 0, FIELD, FIELD);
+
+  const grad = ctx.createLinearGradient(3, gTop, 27, gTop + gH);
+  grad.addColorStop(0, 'rgba(' + p.glowRGB + ',0.96)');
+  grad.addColorStop(1, 'rgba(' + p.glowRGB + ',0.58)');
+  rr(3, gTop, 24, gH, 12);
+  ctx.fillStyle = grad;
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  drawArrow(15, gTop + 22, 16, RIGHT, 'rgba(255,255,255,0.96)', 1);
+
+  for (let i = 0; i < GATE_EVERY; i++) {
+    const py = gTop + 42 + i * 16;
+    rr(10, py, 10, 11, 4);
+    ctx.fillStyle = i < gate.count ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.25)';
+    ctx.fill();
+  }
+  for (let i = 0; i < gate.queue; i++) {
+    ctx.beginPath();
+    ctx.arc(cx, gTop - 12 - i * 11, 3.6, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(' + p.glowRGB + ',0.95)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.65)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+  if (rem > 0) {
+    ctx.beginPath();
+    ctx.arc(26, cy, 30 + (1 - rem) * 62, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(' + p.glowRGB + ',' + (rem * 0.65) + ')';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+  }
+}
+function blockVisual(b) {
+  let r = b.r, c = b.c, scale = 1, alpha = 1;
+  if (drag && drag.b === b) {
+    const vp = visPos(drag);
+    r = vp.r; c = vp.c;
+    scale = 1.06;
+  } else if (b.anim) {
+    const t = clamp((nowT - b.anim.t0) / b.anim.dur, 0, 1);
+    const k = easeOutCubic(t);
+    r = lerp(b.anim.fromR, b.anim.toR, k);
+    c = lerp(b.anim.fromC, b.anim.toC, k);
+    if (b.anim.fade) { alpha = 1 - k * 0.85; scale = 1 - k * 0.12; }
+  } else if (b.spawnSlide) {
+    const t = clamp((nowT - b.spawnT) / 0.34, 0, 1);
+    const k = easeOutCubic(t);
+    c = b.c - (1 - k) * 1.9;
+    if (t < 1) alpha = 0.35 + 0.65 * t;
+  }
+  const pop = nowT - b.popT;
+  if (pop >= 0 && pop < 0.34) {
+    const t = pop / 0.34;
+    scale *= 1 + 0.22 * Math.pow(1 - t, 2);
+  }
+  return { r: r, c: c, scale: scale, alpha: alpha };
+}
+function drawBlock(b) {
+  const vis = blockVisual(b);
+  const S = CELL - 12;
+  const x = PAD + vis.c * CELL + 6;
+  const y = PAD + vis.r * CELL + 6;
+  const st = styleFor(b.v);
+  const p = pal();
+  const isDragged = drag && drag.b === b;
+
+  ctx.save();
+  ctx.globalAlpha = vis.alpha;
+  ctx.translate(x + S / 2, y + S / 2);
+  ctx.scale(vis.scale, vis.scale);
+  ctx.translate(-S / 2, -S / 2);
+
+  ctx.shadowColor = p.dark ? 'rgba(0,0,0,0.42)' : 'rgba(25,55,105,0.20)';
+  ctx.shadowBlur = isDragged ? 24 : 10;
+  ctx.shadowOffsetY = isDragged ? 11 : 4;
+  rr(0, 0, S, S, S * 0.24);
+  ctx.fillStyle = st.bg;
+  ctx.fill();
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetY = 0;
+
+  const sheen = ctx.createLinearGradient(0, 0, 0, S);
+  sheen.addColorStop(0, 'rgba(255,255,255,' + (p.dark ? 0.16 : 0.5) + ')');
+  sheen.addColorStop(0.45, 'rgba(255,255,255,0)');
+  rr(0, 0, S, S, S * 0.24);
+  ctx.fillStyle = sheen;
+  ctx.fill();
+
+  rr(0.8, 0.8, S - 1.6, S - 1.6, S * 0.23);
+  ctx.strokeStyle = p.dark ? 'rgba(255,255,255,0.22)' : 'rgba(12,30,60,0.10)';
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+
+  if (st.glow > 0) {
+    const g = ctx.createRadialGradient(S / 2, S / 2, 4, S / 2, S / 2, S * 0.55);
+    g.addColorStop(0, 'rgba(' + p.glowRGB + ',' + (st.glow * 0.5) + ')');
+    g.addColorStop(1, 'rgba(' + p.glowRGB + ',0)');
+    rr(0, 0, S, S, S * 0.24);
+    ctx.fillStyle = g;
+    ctx.fill();
+  }
+
+  drawArrow(S / 2, S / 2, S * 0.68, b.dir, p.dirArrows[b.dir], p.dark ? 0.24 : 0.21);
+
+  const txt = fmtTile(b.v);
+  const len = txt.length;
+  const fs = len <= 2 ? S * 0.44 : len === 3 ? S * 0.37 : len === 4 ? S * 0.30 : len <= 6 ? S * 0.24 : S * 0.19;
+  ctx.font = '800 ' + fs + 'px Inter, Cairo, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = st.fg;
+  ctx.fillText(txt, S / 2, S / 2 + fs * 0.045);
+
+  if (isDragged) {
+    rr(-4, -4, S + 8, S + 8, S * 0.27);
+    ctx.strokeStyle = 'rgba(' + p.glowRGB + ',0.85)';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+  }
+  if (drag && drag.mergeBlock === b) {
+    const pulse = 0.55 + 0.45 * Math.sin(nowT * 9);
+    rr(-6, -6, S + 12, S + 12, S * 0.28);
+    ctx.strokeStyle = 'rgba(' + p.glowRGB + ',' + pulse + ')';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+function drawParticles() {
+  for (let i = 0; i < particles.length; i++) {
+    const pt = particles[i];
+    const a = clamp(pt.life / pt.maxLife, 0, 1);
+    ctx.globalAlpha = a;
+    ctx.fillStyle = pt.color;
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, pt.size * (0.5 + a * 0.6), 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+function drawFloats() {
+  for (let i = 0; i < floats.length; i++) {
+    const f = floats[i];
+    const t = f.t / f.dur;
+    const a = t < 0.12 ? t / 0.12 : clamp(1 - (t - 0.12) / 0.88, 0, 1);
+    const y = f.y - 46 * easeOutCubic(t);
+    ctx.globalAlpha = a;
+    ctx.font = '800 ' + (f.big ? 27 : 20) + 'px Inter, Cairo, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = pal().floats.shadow;
+    ctx.strokeText(f.text, f.x, y);
+    ctx.fillStyle = f.big ? pal().floats.big : pal().floats.normal;
+    ctx.fillText(f.text, f.x, y);
+  }
+  ctx.globalAlpha = 1;
+}
+function render() {
+  const w = canvas.width, h = canvas.height;
+  if (!w || !h) return;
+  const sc = w / FIELD;
+  ctx.setTransform(sc, 0, 0, sc, 0, 0);
+  ctx.clearRect(0, 0, FIELD, FIELD);
+  if (shakeT > 0) {
+    const m = shakeMag * (shakeT / 0.18);
+    ctx.translate((Math.random() - 0.5) * m * 2, (Math.random() - 0.5) * m * 2);
+  }
+  drawField();
+  drawGate();
+  for (let i = 0; i < blocks.length; i++) {
+    const b = blocks[i];
+    if (!b.ghost && !(drag && drag.b === b)) drawBlock(b);
+  }
+  for (let i = 0; i < blocks.length; i++) {
+    if (blocks[i].ghost) drawBlock(blocks[i]);
+  }
+  if (drag) drawBlock(drag.b);
+  drawParticles();
+  drawFloats();
+}
+/* ============================================================
+   12. Main loop (rAF) + deterministic test stepping
+   ============================================================ */
+function step(dt) {
+  nowT += dt;
+  if (drag) {
+    drag.disp += (drag.target - drag.disp) * clamp(dt * 20, 0, 1);
+    if (Math.abs(drag.target - drag.disp) < 0.003) drag.disp = drag.target;
+    renderDirty = true;
+  }
+  for (let i = blocks.length - 1; i >= 0; i--) {
+    const b = blocks[i];
+    if (b.anim && nowT - b.anim.t0 >= b.anim.dur) {
+      if (b.ghost) { removeBlock(b); continue; }
+      b.anim = null;
+      renderDirty = true;
+    }
+    if (b.spawnSlide && nowT - b.spawnT > 0.55) b.spawnSlide = false;
+  }
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const pt = particles[i];
+    pt.x += pt.vx * dt;
+    pt.y += pt.vy * dt;
+    pt.vy += 420 * dt;
+    pt.vx *= Math.max(0, 1 - dt * 1.6);
+    pt.life -= dt;
+    if (pt.life <= 0) particles.splice(i, 1);
+  }
+  for (let i = floats.length - 1; i >= 0; i--) {
+    floats[i].t += dt;
+    if (floats[i].t >= floats[i].dur) floats.splice(i, 1);
+  }
+  if (displayScore !== score) {
+    displayScore += (score - displayScore) * clamp(dt * 7, 0, 1);
+    if (Math.abs(score - displayScore) < Math.max(0.5, score * 0.001)) displayScore = score;
+    scoreEl.textContent = fmtScore(Math.round(displayScore));
+    renderDirty = true;
+  }
+  if (shakeT > 0) {
+    shakeT = Math.max(0, shakeT - dt);
+    if (shakeT === 0) shakeMag = 0;
+    renderDirty = true;
+  }
+}
+function needsFrame() {
+  if (renderDirty || drag) return true;
+  if (particles.length || floats.length || shakeT > 0 || displayScore !== score) return true;
+  if (nowT - gate.flash < 0.5) return true;
+  for (let i = 0; i < blocks.length; i++) {
+    const b = blocks[i];
+    if (b.anim) return true;
+    if (b.spawnSlide && nowT - b.spawnT < 0.6) return true;
+    if (nowT - b.popT < 0.36) return true;
+  }
+  return false;
+}
+function frame(ts) {
+  const t = ts / 1000;
+  const dt = lastT ? Math.min(0.05, Math.max(0, t - lastT)) : 0.016;
+  lastT = t;
+  step(dt);
+  if (needsFrame()) {
+    render();
+    renderDirty = false;
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ============================================================
+   13. Canvas sizing
+   ============================================================ */
+function resizeCanvas() {
+  const rect = frameEl.getBoundingClientRect();
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const w = Math.max(1, Math.round(rect.width * dpr));
+  const h = Math.max(1, Math.round(rect.height * dpr));
+  if (canvas.width !== w || canvas.height !== h) {
+    canvas.width = w;
+    canvas.height = h;
+  }
+  renderDirty = true;
+}
+
+/* ============================================================
+   14. Theme & UI wiring
+   ============================================================ */
+function setTheme(t) {
+  if (!THEMES[t]) return;
+  themeKey = t;
+  document.documentElement.dataset.theme = t;
+  store.set('am3_theme', t);
+  mixCache.clear();
+  document.querySelectorAll('.theme-dot').forEach((d) => {
+    d.classList.toggle('active', d.dataset.theme === t);
+  });
+  renderDirty = true;
+}
+const icoOn = $('#icoSoundOn');
+const icoOff = $('#icoSoundOff');
+function syncSoundUI() {
+  icoOn.style.display = AudioSys.muted ? 'none' : 'block';
+  icoOff.style.display = AudioSys.muted ? 'block' : 'none';
+}
+document.querySelectorAll('.theme-dot').forEach((dot) => {
+  dot.addEventListener('click', () => {
+    greet();
+    AudioSys.click();
+    setTheme(dot.dataset.theme);
+  });
+});
+$('#soundBtn').addEventListener('click', () => {
+  greet();
+  AudioSys.ensure();
+  AudioSys.setMuted(!AudioSys.muted);
+  syncSoundUI();
+  if (!AudioSys.muted) AudioSys.click();
+});
+$('#restartBtn').addEventListener('click', () => {
+  greet();
+  AudioSys.click();
+  restartGame();
+});
+
+/* ---------- fullscreen ---------- */
+const gameShellEl = document.querySelector('.game-shell');
+function fsElm() { return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement || null; }
+function fsExp() { return !!(gameShellEl && gameShellEl.classList.contains('is-expanded')); }
+function fsOn() { if (!gameShellEl || fsExp()) return; gameShellEl.classList.add('is-expanded'); document.body.classList.add('fs-lock'); }
+function fsOff() { if (!gameShellEl) return; gameShellEl.classList.remove('is-expanded'); document.body.classList.remove('fs-lock'); }
+function toggleFullscreen() {
+  if (fsElm()) {
+    const ex = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+    if (ex) { try { const p = ex.call(document); if (p && p.catch) p.catch(() => {}); } catch (e) {} }
+    fsOff();
+    return;
+  }
+  if (fsExp()) { fsOff(); return; }
+  if (!gameShellEl) return;
+  const rq = gameShellEl.requestFullscreen || gameShellEl.webkitRequestFullscreen || gameShellEl.msRequestFullscreen;
+  if (!rq) { fsOn(); return; }
+  try { const pr = rq.call(gameShellEl); if (pr && pr.catch) pr.catch(() => fsOn()); } catch (e) { fsOn(); }
+  setTimeout(() => { if (!fsElm() && !fsExp()) fsOn(); }, 450);
+}
+const fsBtnEl = $('#fsBtn');
+if (fsBtnEl) fsBtnEl.addEventListener('click', () => { greet(); AudioSys.click(); toggleFullscreen(); });
+document.addEventListener('fullscreenchange', resizeCanvas);
+document.addEventListener('webkitfullscreenchange', resizeCanvas);
+window.addEventListener('keydown', (e) => {
+  const key = e.key;
+  if ((key === 'f' || key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey) toggleFullscreen();
+  if ((key === 'Escape' || key === 'Esc') && fsExp()) fsOff();
+});
+$('#playAgain').addEventListener('click', () => {
+  greet();
+  AudioSys.click();
+  restartGame();
+});
+$('#ctaPlay').addEventListener('click', () => { greet(); });
+
+/* ============================================================
+   15. Boot
+   ============================================================ */
+function boot() {
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  if (window.ResizeObserver) new ResizeObserver(resizeCanvas).observe(frameEl);
+  restartGame();
+  syncHud();
+  syncStats();
+  setTheme(themeKey);
+  syncSoundUI();
+  requestAnimationFrame(frame);
+}
+
+/* Debug / test surface (used by automated QA; harmless in prod) */
+window.ArrowMerge = {
+  state: function () {
+    return {
+      state: state, score: score, best: best, games: games, bestTile: bestTile,
+      gate: { count: gate.count, queue: gate.queue, spawned: gate.spawned },
+      blocks: blocks.filter((b) => !b.ghost).map((b) => ({ v: b.v, r: b.r, c: b.c, dir: b.dir }))
+    };
+  },
+  restart: restartGame,
+  setTheme: setTheme,
+  _test: {
+    consts: { GRID: GRID, CELL: CELL, PAD: PAD, FIELD: FIELD, GATE_ROW: GATE_ROW, GATE_EVERY: GATE_EVERY, UP: UP, RIGHT: RIGHT, DOWN: DOWN, LEFT: LEFT },
+    toggleFs: function () { toggleFullscreen(); },
+    clearBoard: function () {
+      for (let r = 0; r < GRID; r++) for (let c = 0; c < GRID; c++) board[r][c] = null;
+      blocks = [];
+      particles = [];
+      floats = [];
+      drag = null;
+      frameEl.classList.remove('dragging');
+      renderDirty = true;
+    },
+    sandbox: function () {
+      this.clearBoard();
+      gate = { count: 0, queue: 0, flash: -9, spawned: 0 };
+      score = 0;
+      displayScore = 0;
+      state = 'playing';
+      shakeT = 0;
+      shakeMag = 0;
+      gameOverEl.classList.remove('show');
+      scoreEl.textContent = '0';
+      syncHud();
+      renderDirty = true;
+    },
+    resetStats: function () {
+      best = 0;
+      bestTile = 2;
+      games = 0;
+      store.set('am3_best', 0);
+      store.set('am3_maxtile', 2);
+      store.set('am3_games', 0);
+      syncStats();
+      syncHud();
+    },
+    place: function (v, r, c, dir) {
+      r = clamp(r | 0, 0, GRID - 1);
+      c = clamp(c | 0, 0, GRID - 1);
+      const old = board[r][c];
+      if (old) {
+        const i = blocks.indexOf(old);
+        if (i >= 0) blocks.splice(i, 1);
+      }
+      const b = makeBlock(v, r, c, (dir == null ? RIGHT : dir) & 3);
+      board[r][c] = b;
+      blocks.push(b);
+      renderDirty = true;
+      return { v: b.v, r: b.r, c: b.c, dir: b.dir };
+    },
+    removeAt: function (r, c) {
+      const b = board[r][c];
+      if (b) removeBlock(b);
+    },
+    cellCenter: function (r, c) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: rect.left + (PAD + c * CELL + CELL / 2) * (rect.width / FIELD),
+        y: rect.top + (PAD + r * CELL + CELL / 2) * (rect.height / FIELD)
+      };
+    },
+    tick: function (ms) {
+      let remaining = Math.max(0, ms) / 1000;
+      const dtc = 1 / 60;
+      while (remaining > 0.0001) {
+        const dt = Math.min(dtc, remaining);
+        step(dt);
+        remaining -= dt;
+      }
+      render();
+      renderDirty = false;
+    },
+    legal: legalMoveExists,
+    endNow: endGame,
+    addMoves: function (n) {
+      for (let i = 0; i < n; i++) advanceGate();
+    },
+    queueSpawn: function () {
+      gate.queue = Math.min(QUEUE_MAX, gate.queue + 1);
+      flushGate();
+    },
+    boardStr: function () {
+      let out = '';
+      for (let r = 0; r < GRID; r++) {
+        for (let c = 0; c < GRID; c++) {
+          const b = board[r][c];
+          out += b ? String(b.v).padStart(5) : '    .';
+        }
+        out += '\n';
+      }
+      return out;
+    }
+  }
+};
+
+boot();
+
+
+
+
+})();
+</script>
+
+
+</body>
+</html>
